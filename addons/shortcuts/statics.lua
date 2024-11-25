@@ -216,6 +216,4 @@ validabils_it('job_abilities')
 validabils_it('weapon_skills')
 validabils_it('monster_skills')
 validabils_it('mounts')
-if settings.include_items then
-    validabils_it('items')
-end
+validabils_it('items')
