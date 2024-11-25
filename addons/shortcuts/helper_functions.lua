@@ -208,18 +208,23 @@ end
 ---- boolean : true indicates that the spell/ability is known to you and false indicates that it is not.
 -----------------------------------------------------------------------------------
 function check_usability(player,resource,id)
-    if resource == 'spells' and ( (res.spells[id].levels[player.main_job_id] and ((res.spells[id].levels[player.main_job_id] <= player.main_job_level) or (player.main_job_level >= 99 and res.spells[id].levels[player.main_job_id] <= player.job_points[player.main_job:lower()].jp_spent))) or
-      (res.spells[id].levels[player.sub_job_id] and res.spells[id].levels[player.sub_job_id] <= player.sub_job_level) ) then -- Should check to see if you know the spell
-        return true
-    elseif L(windower.ffxi.get_abilities()[resource] or {}):contains(id) then
+	if resource == 'spells' and (
+		(res.spells[id].levels[player.main_job_id] and (
+			(res.spells[id].levels[player.main_job_id] <= player.main_job_level) or
+			(player.main_job_level >= 99 and res.spells[id].levels[player.main_job_id] <= player.job_points[player.main_job:lower()].jp_spent)
+		)) or
+		(res.spells[id].levels[player.sub_job_id] and res.spells[id].levels[player.sub_job_id] <= player.sub_job_level)
+	) then -- Should check to see if you know the spell
 		return true
-    elseif resource == 'monster_skills' and player.main_job_id == 23 and (res.monstrosity[windower.ffxi.get_mjob_data().species].tp_moves[id] or 0) <= player.main_job_level then
+	elseif L(windower.ffxi.get_abilities()[resource] or {}):contains(id) then
 		return true
-    elseif resource == 'mounts' and math.floor((windower.packets.last_incoming(0x0AE):byte(math.floor(id/8)+5)%2^(id%8+1))/2^(id%8)) == 1 then
+	elseif resource == 'monster_skills' and player.main_job_id == 23 and (res.monstrosity[windower.ffxi.get_mjob_data().species].tp_moves[id] or 0) <= player.main_job_level then
 		return true
-    elseif resource == 'items' then
+	elseif resource == 'mounts' and math.floor((windower.packets.last_incoming(0x0AE):byte(math.floor(id/8)+5)%2^(id%8+1))/2^(id%8)) == 1 then
 		return true
-    end
+	elseif resource == 'items' then
+		return true
+	end
 end
 
 
